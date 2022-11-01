@@ -108,11 +108,6 @@ int main(void)
 	  //GREEN off YELLOW on
 	  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, RESET);
 	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, SET);
-	  //2s of YELLOW
-	  HAL_Delay(2000);
-	  //YELLOW off RED on
-	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
-	  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, SET);
 
     /* USER CODE END WHILE */
 
