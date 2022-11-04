@@ -91,71 +91,56 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  //INIT 1: RED1 only
-  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, SET);
-  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, RESET);
-  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, RESET);
-
-  //INIT 2: GREEN2 only
-  HAL_GPIO_WritePin(LED2_RED_GPIO_Port, LED2_RED_Pin, RESET);
-  HAL_GPIO_WritePin(LED2_YELLOW_GPIO_Port, LED2_YELLOW_Pin, RESET);
-  HAL_GPIO_WritePin(LED2_GREEN_GPIO_Port, LED2_GREEN_Pin, SET);
-
-
-  //INIT TIMER
-  int timer = 0;
+  //INIT timer
+  int time = 0;
 
   while (1)
   {
-	  //Handle timer condition
-	  switch(timer) {
-	  //At 0s
+	  //Logic for switch lights, toggle sequentially
+	  switch(time) {
 	  case 0:
-		  //Turn on RED1-GREEN2
-		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, SET);
-		  HAL_GPIO_WritePin(LED2_GREEN_GPIO_Port, LED2_GREEN_Pin, SET);
-
-		  //Turn off YELLOW1-RED2
-		  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, RESET);
-		  HAL_GPIO_WritePin(LED2_RED_GPIO_Port, LED2_RED_Pin, RESET);
+		  HAL_GPIO_TogglePin(SEG0_GPIO_Port, SEG0_Pin);
 		  break;
-	  //At 3s
+	  case 1:
+		  HAL_GPIO_TogglePin(SEG1_GPIO_Port, SEG1_Pin);
+		  break;
+	  case 2:
+		  HAL_GPIO_TogglePin(SEG2_GPIO_Port, SEG2_Pin);
+		  break;
 	  case 3:
-		  //Turn on YELLOW2
-		  HAL_GPIO_WritePin(LED2_YELLOW_GPIO_Port, LED2_YELLOW_Pin, SET);
-
-		  //Turn off GREEN2
-		  HAL_GPIO_WritePin(LED2_GREEN_GPIO_Port, LED2_GREEN_Pin, RESET);
+		  HAL_GPIO_TogglePin(SEG3_GPIO_Port, SEG3_Pin);
 		  break;
-	  //At 5s
+	  case 4:
+		  HAL_GPIO_TogglePin(SEG4_GPIO_Port, SEG4_Pin);
+		  break;
 	  case 5:
-		  //Turn on GRREN1-RED2
-		  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, SET);
-		  HAL_GPIO_WritePin(LED2_RED_GPIO_Port, LED2_RED_Pin, SET);
-
-		  //Turn off RED1-YELLOW2
-		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
-		  HAL_GPIO_WritePin(LED2_YELLOW_GPIO_Port, LED2_YELLOW_Pin, RESET);
+		  HAL_GPIO_TogglePin(SEG5_GPIO_Port, SEG5_Pin);
 		  break;
-	  //At 8s
+	  case 6:
+		  HAL_GPIO_TogglePin(SEG6_GPIO_Port, SEG6_Pin);
+		  break;
+	  case 7:
+		  HAL_GPIO_TogglePin(SEG7_GPIO_Port, SEG7_Pin);
+		  break;
 	  case 8:
-		  //Turn on YELLOW1
-		  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, SET);
-
-		  //Turn off GREEN1
-		  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, RESET);
+		  HAL_GPIO_TogglePin(SEG8_GPIO_Port, SEG8_Pin);
 		  break;
-	  //At 9s
 	  case 9:
-		  //Reset timer
-		  timer = -1;
+		  HAL_GPIO_TogglePin(SEG9_GPIO_Port, SEG9_Pin);
+		  break;
+	  case 10:
+		  HAL_GPIO_TogglePin(SEG10_GPIO_Port, SEG10_Pin);
+		  break;
+	  case 11:
+		  HAL_GPIO_TogglePin(SEG11_GPIO_Port, SEG11_Pin);
+		  time = -1;
 		  break;
 	  }
 
-	  //One second passed
-	  timer++;
-	  HAL_Delay(1000);
 
+	  //Time progression per 0.5s
+	  time++;
+	  HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -211,13 +196,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin|LED2_RED_Pin
-                          |LED2_YELLOW_Pin|LED2_GREEN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, SEG0_Pin|SEG1_Pin|SEG2_Pin|SEG3_Pin
+                          |SEG4_Pin|SEG5_Pin|SEG6_Pin|SEG7_Pin
+                          |SEG8_Pin|SEG9_Pin|SEG10_Pin|SEG11_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_RED_Pin LED_YELLOW_Pin LED_GREEN_Pin LED2_RED_Pin
-                           LED2_YELLOW_Pin LED2_GREEN_Pin */
-  GPIO_InitStruct.Pin = LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin|LED2_RED_Pin
-                          |LED2_YELLOW_Pin|LED2_GREEN_Pin;
+  /*Configure GPIO pins : SEG0_Pin SEG1_Pin SEG2_Pin SEG3_Pin
+                           SEG4_Pin SEG5_Pin SEG6_Pin SEG7_Pin
+                           SEG8_Pin SEG9_Pin SEG10_Pin SEG11_Pin */
+  GPIO_InitStruct.Pin = SEG0_Pin|SEG1_Pin|SEG2_Pin|SEG3_Pin
+                          |SEG4_Pin|SEG5_Pin|SEG6_Pin|SEG7_Pin
+                          |SEG8_Pin|SEG9_Pin|SEG10_Pin|SEG11_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
