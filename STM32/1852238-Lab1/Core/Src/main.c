@@ -191,34 +191,76 @@ int main(void)
 	  }
   }
 
-  //INIT timer
-  int time = 0;
-
-  //Dummy call to clear warning
+  //INIT to clear warnings
   clearAllClock();
+
+  //INIT BEGIN CONDITION AKA SET HR:MIN:SEC
+  int hour = 0;
+  int min = 0;
+  int sec = 0;
+
+  //INIT HAND(S)
+  setNumberOnClock(0); //HR
+  //setNumberOnClock(11); //MIN
+  //setNumberOnClock(3); //SEC
+
+
+  //Detect change of minute hand (pmin)
+  int pmin = 0;
 
   while (1)
   {
-	  //Reset time
-	  if (time >=12) {
-		  time = 0;
-	  }
+	//RESET SEC - RAISE PMIN FLAG
+	if (sec == 61) {
+		min++;
+		sec = 0;
+		pmin = 1;
+	}
 
-	  //Display number
-	  setNumberOnClock(time);
+	//RESET MIN - CHANGE HR HAND
+	if (min == 60) {
+		hour++;
+		min = 0;
+		setNumberOnClock(hour); //Next seg
+		clearNumberOnClock(hour - 1); //Clear previous seg
+	}
 
-	  //Clear the 2nd LED from current LED
-	  if (time >= 2) {
-		  clearNumberOnClock(time - 2);
-	  }
-	  else {
-		  clearNumberOnClock(10 + time);
-	  }
+	//RESET HR
+	if (hour == 12) hour = 0;
 
-	  //Time progression per 0.5s
-	  time++;
-	  HAL_Delay(500);
+	//WHEN MIN HAS CHANGED
+	if (pmin == 1) {
+		//The change is in range of 5 -> move hand
+		if (min % 5 == 0) {
+			setNumberOnClock(min/5);
+			//Find out which hand to clear
+			int cmin;
+			if (min == 0) cmin = 11;
+			else cmin = min / 5 - 1;
+			//Condition to avoid clearing preoccupied segments
+			if (cmin != hour && cmin != sec/5) {
+				clearNumberOnClock(cmin);
+			}
+		}
+		//Reset flag
+		pmin = 0;
+	}
+
+	//RESET SEC
+	if (sec % 5 == 0) {
+		setNumberOnClock(sec/5);
+		//Find out which hand to clear
+		int csec = sec / 5 - 1;
+		if (csec != hour && csec != min / 5) {
+			clearNumberOnClock(csec);
+		}
+	}
+
+	//Time progression every 1s
+	HAL_Delay(1000);
+	sec++;
     /* USER CODE END WHILE */
+
 
     /* USER CODE BEGIN 3 */
   }
