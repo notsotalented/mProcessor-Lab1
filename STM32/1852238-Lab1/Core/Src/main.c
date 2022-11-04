@@ -107,53 +107,62 @@ int main(void)
 	  HAL_GPIO_WritePin(SEG11_GPIO_Port, SEG11_Pin, RESET);
   }
 
+  //Set segment on function
+  void setNumberOnClock(int num) {
+	  switch (num) {
+	  case 0:
+		  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, SET);
+		  break;
+	  case 1:
+		  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, SET);
+		  break;
+	  case 2:
+		  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, SET);
+		  break;
+	  case 3:
+		  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, SET);
+		  break;
+	  case 4:
+		  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, SET);
+		  break;
+	  case 5:
+		  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, SET);
+		  break;
+	  case 6:
+		  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, SET);
+		  break;
+	  case 7:
+		  HAL_GPIO_WritePin(SEG7_GPIO_Port, SEG7_Pin, SET);
+		  break;
+	  case 8:
+		  HAL_GPIO_WritePin(SEG8_GPIO_Port, SEG8_Pin, SET);
+		  break;
+	  case 9:
+		  HAL_GPIO_WritePin(SEG9_GPIO_Port, SEG9_Pin, SET);
+		  break;
+	  case 10:
+		  HAL_GPIO_WritePin(SEG10_GPIO_Port, SEG10_Pin, SET);
+		  break;
+	  case 11:
+		  HAL_GPIO_WritePin(SEG11_GPIO_Port, SEG11_Pin, SET);
+		  break;
+	  }
+
+  }
+
   //INIT timer
   int time = 0;
 
   while (1)
   {
-	  //Logic for switch lights, toggle sequentially
-	  switch(time) {
-	  case 0:
+	  //Reset time and clock
+	  if (time >=12) {
 		  clearAllClock();
-		  HAL_GPIO_TogglePin(SEG0_GPIO_Port, SEG0_Pin);
-		  break;
-	  case 1:
-		  HAL_GPIO_TogglePin(SEG1_GPIO_Port, SEG1_Pin);
-		  break;
-	  case 2:
-		  HAL_GPIO_TogglePin(SEG2_GPIO_Port, SEG2_Pin);
-		  break;
-	  case 3:
-		  HAL_GPIO_TogglePin(SEG3_GPIO_Port, SEG3_Pin);
-		  break;
-	  case 4:
-		  HAL_GPIO_TogglePin(SEG4_GPIO_Port, SEG4_Pin);
-		  break;
-	  case 5:
-		  HAL_GPIO_TogglePin(SEG5_GPIO_Port, SEG5_Pin);
-		  break;
-	  case 6:
-		  HAL_GPIO_TogglePin(SEG6_GPIO_Port, SEG6_Pin);
-		  break;
-	  case 7:
-		  HAL_GPIO_TogglePin(SEG7_GPIO_Port, SEG7_Pin);
-		  break;
-	  case 8:
-		  HAL_GPIO_TogglePin(SEG8_GPIO_Port, SEG8_Pin);
-		  break;
-	  case 9:
-		  HAL_GPIO_TogglePin(SEG9_GPIO_Port, SEG9_Pin);
-		  break;
-	  case 10:
-		  HAL_GPIO_TogglePin(SEG10_GPIO_Port, SEG10_Pin);
-		  break;
-	  case 11:
-		  HAL_GPIO_TogglePin(SEG11_GPIO_Port, SEG11_Pin);
-		  time = -1;
-		  break;
+		  time = 0;
 	  }
 
+	  //Display number
+	  setNumberOnClock(time);
 
 	  //Time progression per 0.5s
 	  time++;
