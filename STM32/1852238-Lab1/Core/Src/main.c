@@ -91,19 +91,176 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  //INIT RED ON YELLOW OFF
-  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, SET);
-  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, RESET);
+  //Clear function
+  void clearAllClock() {
+	  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG7_GPIO_Port, SEG7_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG8_GPIO_Port, SEG8_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG9_GPIO_Port, SEG9_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG10_GPIO_Port, SEG10_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG11_GPIO_Port, SEG11_Pin, RESET);
+  }
+
+  //Set segment on function
+  void setNumberOnClock(int num) {
+	  switch (num) {
+	  case 0:
+		  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, SET);
+		  break;
+	  case 1:
+		  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, SET);
+		  break;
+	  case 2:
+		  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, SET);
+		  break;
+	  case 3:
+		  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, SET);
+		  break;
+	  case 4:
+		  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, SET);
+		  break;
+	  case 5:
+		  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, SET);
+		  break;
+	  case 6:
+		  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, SET);
+		  break;
+	  case 7:
+		  HAL_GPIO_WritePin(SEG7_GPIO_Port, SEG7_Pin, SET);
+		  break;
+	  case 8:
+		  HAL_GPIO_WritePin(SEG8_GPIO_Port, SEG8_Pin, SET);
+		  break;
+	  case 9:
+		  HAL_GPIO_WritePin(SEG9_GPIO_Port, SEG9_Pin, SET);
+		  break;
+	  case 10:
+		  HAL_GPIO_WritePin(SEG10_GPIO_Port, SEG10_Pin, SET);
+		  break;
+	  case 11:
+		  HAL_GPIO_WritePin(SEG11_GPIO_Port, SEG11_Pin, SET);
+		  break;
+	  }
+  }
+
+  //Set segment off function
+  void clearNumberOnClock(int num) {
+	  switch (num) {
+	  case 0:
+		  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, RESET);
+		  break;
+	  case 1:
+		  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
+		  break;
+	  case 2:
+		  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, RESET);
+		  break;
+	  case 3:
+		  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, RESET);
+		  break;
+	  case 4:
+		  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, RESET);
+		  break;
+	  case 5:
+		  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, RESET);
+		  break;
+	  case 6:
+		  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, RESET);
+		  break;
+	  case 7:
+		  HAL_GPIO_WritePin(SEG7_GPIO_Port, SEG7_Pin, RESET);
+		  break;
+	  case 8:
+		  HAL_GPIO_WritePin(SEG8_GPIO_Port, SEG8_Pin, RESET);
+		  break;
+	  case 9:
+		  HAL_GPIO_WritePin(SEG9_GPIO_Port, SEG9_Pin, RESET);
+		  break;
+	  case 10:
+		  HAL_GPIO_WritePin(SEG10_GPIO_Port, SEG10_Pin, RESET);
+		  break;
+	  case 11:
+		  HAL_GPIO_WritePin(SEG11_GPIO_Port, SEG11_Pin, RESET);
+		  break;
+	  }
+  }
+
+  //INIT to clear warnings
+  clearAllClock();
+
+  //INIT BEGIN CONDITION AKA SET HR:MIN:SEC
+  int hour = 0;
+  int min = 0;
+  int sec = 0;
+
+  //INIT HAND(S)
+  setNumberOnClock(0); //HR
+  //setNumberOnClock(11); //MIN
+  //setNumberOnClock(3); //SEC
+
+
+  //Detect change of minute hand (pmin)
+  int pmin = 0;
 
   while (1)
   {
-	  //SWITCH LED, WAIT 2s
-	  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-	  HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
+	//RESET SEC - RAISE PMIN FLAG
+	if (sec == 61) {
+		min++;
+		sec = 0;
+		pmin = 1;
+	}
 
-	  HAL_Delay(2000);
+	//RESET MIN - CHANGE HR HAND
+	if (min == 60) {
+		hour++;
+		min = 0;
+		setNumberOnClock(hour); //Next seg
+		clearNumberOnClock(hour - 1); //Clear previous seg
+	}
 
+	//RESET HR
+	if (hour == 12) hour = 0;
+
+	//WHEN MIN HAS CHANGED
+	if (pmin == 1) {
+		//The change is in range of 5 -> move hand
+		if (min % 5 == 0) {
+			setNumberOnClock(min/5);
+			//Find out which hand to clear
+			int cmin;
+			if (min == 0) cmin = 11;
+			else cmin = min / 5 - 1;
+			//Condition to avoid clearing preoccupied segments
+			if (cmin != hour && cmin != sec/5) {
+				clearNumberOnClock(cmin);
+			}
+		}
+		//Reset flag
+		pmin = 0;
+	}
+
+	//RESET SEC
+	if (sec % 5 == 0) {
+		setNumberOnClock(sec/5);
+		//Find out which hand to clear
+		int csec = sec / 5 - 1;
+		if (csec != hour && csec != min / 5) {
+			clearNumberOnClock(csec);
+		}
+	}
+
+	//Time progression every 1s
+	HAL_Delay(1000);
+	sec++;
     /* USER CODE END WHILE */
+
 
     /* USER CODE BEGIN 3 */
   }
@@ -158,10 +315,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_YELLOW_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, SEG0_Pin|SEG1_Pin|SEG2_Pin|SEG3_Pin
+                          |SEG4_Pin|SEG5_Pin|SEG6_Pin|SEG7_Pin
+                          |SEG8_Pin|SEG9_Pin|SEG10_Pin|SEG11_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_RED_Pin LED_YELLOW_Pin */
-  GPIO_InitStruct.Pin = LED_RED_Pin|LED_YELLOW_Pin;
+  /*Configure GPIO pins : SEG0_Pin SEG1_Pin SEG2_Pin SEG3_Pin
+                           SEG4_Pin SEG5_Pin SEG6_Pin SEG7_Pin
+                           SEG8_Pin SEG9_Pin SEG10_Pin SEG11_Pin */
+  GPIO_InitStruct.Pin = SEG0_Pin|SEG1_Pin|SEG2_Pin|SEG3_Pin
+                          |SEG4_Pin|SEG5_Pin|SEG6_Pin|SEG7_Pin
+                          |SEG8_Pin|SEG9_Pin|SEG10_Pin|SEG11_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
