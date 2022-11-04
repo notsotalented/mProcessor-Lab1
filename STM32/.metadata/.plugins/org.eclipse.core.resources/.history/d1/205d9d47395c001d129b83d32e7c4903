@@ -93,18 +93,18 @@ int main(void)
 
   //Clear function
   void clearAllClock() {
-	  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG7_GPIO_Port, SEG7_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG8_GPIO_Port, SEG8_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG9_GPIO_Port, SEG9_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG10_GPIO_Port, SEG10_Pin, RESET);
-	  HAL_GPIO_WritePin(SEG11_GPIO_Port, SEG11_Pin, RESET);
+	  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, SET);
+	  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, SET);
+	  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, SET);
+	  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, SET);
+	  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, SET);
+	  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, SET);
+	  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, SET);
+	  HAL_GPIO_WritePin(SEG7_GPIO_Port, SEG7_Pin, SET);
+	  HAL_GPIO_WritePin(SEG8_GPIO_Port, SEG8_Pin, SET);
+	  HAL_GPIO_WritePin(SEG9_GPIO_Port, SEG9_Pin, SET);
+	  HAL_GPIO_WritePin(SEG10_GPIO_Port, SEG10_Pin, SET);
+	  HAL_GPIO_WritePin(SEG11_GPIO_Port, SEG11_Pin, SET);
   }
 
   //INIT timer
@@ -115,7 +115,6 @@ int main(void)
 	  //Logic for switch lights, toggle sequentially
 	  switch(time) {
 	  case 0:
-		  clearAllClock();
 		  HAL_GPIO_TogglePin(SEG0_GPIO_Port, SEG0_Pin);
 		  break;
 	  case 1:

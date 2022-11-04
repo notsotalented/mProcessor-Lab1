@@ -115,7 +115,6 @@ int main(void)
 	  //Logic for switch lights, toggle sequentially
 	  switch(time) {
 	  case 0:
-		  clearAllClock();
 		  HAL_GPIO_TogglePin(SEG0_GPIO_Port, SEG0_Pin);
 		  break;
 	  case 1:
